@@ -13,18 +13,15 @@ function chatbot() {
 
         newChat() {
             if (confirm('Are you sure you want to start a new chat? This will clear all messages.')) {
-            this.messages = [
-                
-            ];
-            this.currentMessage = '';
-            this.messageId = 2;
+                this.messages = [];
+                this.currentMessage = '';
+                this.messageId = 2;
             }
         },
 
         async sendMessage() {
             if (!this.currentMessage.trim() || this.loading) return;
 
-            // Add user message to the messages array
             this.messages.push({
                 id: this.messageId++,
                 role: 'user',
@@ -40,8 +37,8 @@ function chatbot() {
             });
 
             try {
-                const response = await this.chatWithOpenRouter(userMessage);
-                
+                const response = await this.chatWithServer(userMessage);
+
                 this.messages.push({
                     id: this.messageId++,
                     role: 'assistant',
@@ -62,33 +59,23 @@ function chatbot() {
             }
         },
 
-        async chatWithOpenRouter(message) {
-            const apiKey = "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";
-            
-            // Get the last two messages (if available) to include in the context
+        async chatWithServer(message) {
             const recentMessages = this.messages.slice(-2).map(msg => ({
                 role: msg.role,
                 content: msg.content
             }));
 
-            // Add the current user message
             const messagesToSend = [
                 ...recentMessages,
                 { role: "user", content: message }
             ];
 
-            const response = await fetch("https://openrouter.ai/api/v1/chat/completions", {
+            const response = await fetch("/.netlify/functions/chat", {
                 method: "POST",
                 headers: {
-                    "Authorization": `Bearer ${apiKey}`,
-                    "Content-Type": "application/json",
-                    "HTTP-Referer": "https://your-site.com",
-                    "X-Title": "My Chat App"
+                    "Content-Type": "application/json"
                 },
-                body: JSON.stringify({
-                    model: "deepseek/deepseek-r1:free",
-                    messages: messagesToSend
-                })
+                body: JSON.stringify({ messages: messagesToSend })
             });
 
             const data = await response.json();
@@ -99,6 +86,5 @@ function chatbot() {
                 throw new Error(data.error?.message || 'Unknown error');
             }
         }
-
     }
 }
