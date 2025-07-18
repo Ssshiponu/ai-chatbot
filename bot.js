@@ -70,7 +70,7 @@ function chatbot() {
                 { role: "user", content: message }
             ];
 
-            const response = await fetch("/.netlify/functions/chat", {
+            const response = await fetch("https://shiponai.netlify.app/netlify/functions/chat.js", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
