@@ -115,6 +115,7 @@ body {
     overflow-x: auto;
     margin-bottom: 16px;
     font-family: 'Consolas', 'Monaco', monospace;
+    text-wrap: wrap;
     font-size: 14px;
 }
 
