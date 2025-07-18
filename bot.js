@@ -63,7 +63,7 @@ function chatbot() {
         },
 
         async chatWithOpenRouter(message) {
-            const apiKey = "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";
+            const apiKey = "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";
             
             // Get the last two messages (if available) to include in the context
             const recentMessages = this.messages.slice(-2).map(msg => ({
