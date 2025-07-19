@@ -10,6 +10,7 @@ function chatbot() {
         currentMessage: '',
         loading: false,
         messageId: 2,
+        model: 'deepseek/deepseek-r1-0528:free', // Default model
 
         newChat() {
             if (confirm('Are you sure you want to start a new chat? This will clear all messages.')) {
@@ -75,8 +76,12 @@ function chatbot() {
                 headers: {
                     "Content-Type": "application/json"
                 },
-                body: JSON.stringify({ messages: messagesToSend })
+                body: JSON.stringify({ 
+                    messages: messagesToSend,
+                    model: this.model
+                 })
             });
+
 
             const data = await response.json();
 

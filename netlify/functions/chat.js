@@ -2,7 +2,6 @@ export async function handler(event) {
     const apiKey = process.env.API_KEY;
 
     const body = JSON.parse(event.body);
-
     const response = await fetch("https://openrouter.ai/api/v1/chat/completions", {
         method: "POST",
         headers: {
@@ -12,7 +11,7 @@ export async function handler(event) {
             "X-Title": "My Chat App"
         },
         body: JSON.stringify({
-            model: "deepseek/deepseek-r1:free",
+            model: body.model || "deepseek/deepseek-r1-0528:free",
             messages: body.messages
         })
     });
